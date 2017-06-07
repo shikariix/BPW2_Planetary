@@ -9,8 +9,13 @@ public class PlayerScript : MonoBehaviour {
 	public float maxSpeed = 5f;
 
 	private Transform currentPlanet;
+	private SpringJoint2D spring;
 	private bool canJump = false;
 	bool facingRight = true;
+
+	void Start() {
+		spring = GetComponent<SpringJoint2D> ();
+	}
 
 	// Update is called once per frame
 	void Update () {
@@ -25,7 +30,6 @@ public class PlayerScript : MonoBehaviour {
 		//		
 		//	}
 		//}
-
 
 		if (Input.GetButtonDown ("Jump") && canJump == true) {
 			rb.AddForce (transform.up * jump);
@@ -47,12 +51,25 @@ public class PlayerScript : MonoBehaviour {
 			rb.AddForce (transform.right * move * maxSpeed);
 		} else if (Input.GetKey (KeyCode.D)) {
 			rb.AddForce (transform.right * move * maxSpeed);
-		} else {
-			rb.AddForce (transform.right * 0);
-			rb.velocity = new Vector2 (0, 0);
 		}
-		transform.up -= currentPlanet.position - transform.position;
 			
+		if (currentPlanet != null) {
+			transform.up -= currentPlanet.position - transform.position;
+			//spring.enabled = true;
+			//spring.connectedAnchor = currentPlanet.position;
+		}
+
+		if (Input.GetButtonUp ("Fire1")) {
+
+			Vector3 rayOrigin = gameObject.transform.position;
+
+			RaycastHit2D hit = Physics2D.Raycast (rayOrigin, Input.mousePosition);
+
+			if (hit.collider.gameObject != null) {
+				spring.enabled = true;
+				spring.connectedAnchor = Input.mousePosition;
+			} 
+		} 
 	}
 
 	void Flip () {
