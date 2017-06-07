@@ -6,17 +6,12 @@ public class PlayerScript : MonoBehaviour {
 
 	public Rigidbody2D rb;
 	public float jump;
-	public float maxSpeed = 0.8f;
+	public float maxSpeed = 5f;
 
 	private Transform currentPlanet;
 	private bool canJump = false;
 	bool facingRight = true;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
 	// Update is called once per frame
 	void Update () {
 		//PlanetScript[] planets = GameObject.FindObjectsOfType<PlanetScript> ();
@@ -54,6 +49,7 @@ public class PlayerScript : MonoBehaviour {
 			rb.AddForce (transform.right * move * maxSpeed);
 		} else {
 			rb.AddForce (transform.right * 0);
+			rb.velocity = new Vector2 (0, 0);
 		}
 		transform.up -= currentPlanet.position - transform.position;
 			
