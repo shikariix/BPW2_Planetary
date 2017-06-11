@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour {
 
+	public static PlayerScript singleton;
+
 	public Rigidbody2D rb;
 	public float jump;
 	public float maxSpeed = 5f;
@@ -12,6 +14,10 @@ public class PlayerScript : MonoBehaviour {
 	private SpringJoint2D spring;
 	private bool canJump = false;
 	bool facingRight = true;
+
+	void Awake() {
+		singleton = this;
+	}
 
 	void Start() {
 		spring = GetComponent<SpringJoint2D> ();
@@ -55,8 +61,6 @@ public class PlayerScript : MonoBehaviour {
 			
 		if (currentPlanet != null) {
 			transform.up -= currentPlanet.position - transform.position;
-			//spring.enabled = true;
-			//spring.connectedAnchor = currentPlanet.position;
 		}
 
 		if (Input.GetButtonUp ("Fire1")) {
@@ -66,8 +70,9 @@ public class PlayerScript : MonoBehaviour {
 			RaycastHit2D hit = Physics2D.Raycast (rayOrigin, Input.mousePosition);
 
 			if (hit.collider.gameObject != null) {
-				spring.enabled = true;
-				spring.connectedAnchor = Input.mousePosition;
+				//spring.enabled = true;
+				//spring.connectedAnchor = hit.collider.transform.position;
+				//spring.connectedBody = hit.collider.gameObject.GetComponent<Rigidbody2D> ();
 			} 
 		} 
 	}
