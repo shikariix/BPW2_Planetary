@@ -9,8 +9,9 @@ public class PlayerScript : MonoBehaviour {
 	public Rigidbody2D rb;
 	public float jump;
 	public float maxSpeed = 5f;
+    public Vector3 spawn;
 
-	private Transform currentPlanet;
+    private Transform currentPlanet;
 	private SpringJoint2D spring;
 	private bool canJump = false;
 	bool facingRight = true;
@@ -21,10 +22,12 @@ public class PlayerScript : MonoBehaviour {
 
 	void Start() {
 		spring = GetComponent<SpringJoint2D> ();
-	}
+        spawn = gameObject.transform.position;
+    }
 
 	// Update is called once per frame
 	void Update () {
+        //inefficient script, keeping it to show progress
 		//PlanetScript[] planets = GameObject.FindObjectsOfType<PlanetScript> ();
 		//foreach (PlanetScript p in planets) {
 		//	float distance = Vector3.Distance (p.transform.position, transform.position);
@@ -38,6 +41,7 @@ public class PlayerScript : MonoBehaviour {
 		//}
 
 		if (Input.GetButtonDown ("Jump") && canJump == true) {
+            //find something else for this?
 			rb.AddForce (transform.up * jump);
 			canJump = false;
 		}
@@ -45,18 +49,26 @@ public class PlayerScript : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D (Collision2D col) {
+        //only allow jumping after hitting ground to avoid endless jumps
 		if (col.gameObject.tag == "Planet") {
 			canJump = true;
 			currentPlanet = col.transform;
 		}
+
+        if (col.gameObject.tag == "Water")
+        {
+            Invoke("Respawn", 2);
+        }
 	}
 
 	void FixedUpdate () {
-		float move = Input.GetAxis ("Horizontal");
+        float move = Input.GetAxis ("Horizontal");
 		if (Input.GetKey (KeyCode.A)) {
 			rb.AddForce (transform.right * move * maxSpeed);
+            Flip();
 		} else if (Input.GetKey (KeyCode.D)) {
 			rb.AddForce (transform.right * move * maxSpeed);
+            Flip();
 		}
 			
 		if (currentPlanet != null) {
@@ -78,6 +90,17 @@ public class PlayerScript : MonoBehaviour {
 	}
 
 	void Flip () {
-		facingRight = !facingRight;
+        SpriteRenderer flip = GetComponent<SpriteRenderer>();
+        if (facingRight && Input.GetKey(KeyCode.A) || !facingRight && Input.GetKey(KeyCode.D))
+        {
+            facingRight = !facingRight;
+            flip.flipX = !flip.flipX;
+        }
 	}
+
+    void Respawn ()
+    {
+        //Instantiate(gameObject, spawn, Quaternion.identity);
+        //Destroy(gameObject);
+    }
 }
