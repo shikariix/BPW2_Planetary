@@ -12,7 +12,6 @@ public class PlayerScript : MonoBehaviour {
     public Vector3 spawn;
 
     private Transform currentPlanet;
-	private SpringJoint2D spring;
 	private bool canJump = false;
 	bool facingRight = true;
 
@@ -21,7 +20,6 @@ public class PlayerScript : MonoBehaviour {
 	}
 
 	void Start() {
-		spring = GetComponent<SpringJoint2D> ();
         spawn = gameObject.transform.position;
     }
 
@@ -74,19 +72,6 @@ public class PlayerScript : MonoBehaviour {
 		if (currentPlanet != null) {
 			transform.up -= currentPlanet.position - transform.position;
 		}
-
-		if (Input.GetButtonUp ("Fire1")) {
-
-			Vector3 rayOrigin = gameObject.transform.position;
-
-			RaycastHit2D hit = Physics2D.Raycast (rayOrigin, Input.mousePosition);
-
-			if (hit.collider.gameObject != null) {
-				//spring.enabled = true;
-				//spring.connectedAnchor = hit.collider.transform.position;
-				//spring.connectedBody = hit.collider.gameObject.GetComponent<Rigidbody2D> ();
-			} 
-		} 
 	}
 
 	void Flip () {
