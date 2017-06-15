@@ -5,7 +5,6 @@ using UnityEngine;
 public class StickyTongue : MonoBehaviour {
 
 	private SpringJoint2D spring;
-	private DistanceJoint2D dist;
 	Vector3 targetPos;
 	RaycastHit2D hit;
 	public float distance = 10f;
@@ -14,7 +13,6 @@ public class StickyTongue : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		spring = GetComponent<SpringJoint2D> ();
-		dist = GetComponent<DistanceJoint2D> ();
 	}
 	
 	// Update is called once per frame

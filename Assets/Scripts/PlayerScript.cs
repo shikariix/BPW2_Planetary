@@ -4,23 +4,33 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour {
 
-	public static PlayerScript singleton;
+    public static PlayerScript Singleton { get; private set; }
 
 	public Rigidbody2D rb;
 	public float jump;
 	public float maxSpeed = 5f;
     public Vector3 spawn;
 
+    private AudioSource sound;
     private Transform currentPlanet;
 	private bool canJump = false;
 	bool facingRight = true;
 
 	void Awake() {
-		singleton = this;
+        if (Singleton == null)
+        {
+            Singleton = this;
+            DontDestroyOnLoad(gameObject);
+        } else
+        {
+            Destroy(gameObject);
+        }
+		
 	}
 
 	void Start() {
         spawn = gameObject.transform.position;
+        sound = GetComponent<AudioSource>();
     }
 
 	// Update is called once per frame
@@ -42,6 +52,7 @@ public class PlayerScript : MonoBehaviour {
             //find something else for this?
 			rb.AddForce (transform.up * jump);
 			canJump = false;
+            sound.Play();
 		}
 			
 	}
@@ -50,16 +61,19 @@ public class PlayerScript : MonoBehaviour {
         //only allow jumping after hitting ground to avoid endless jumps
 		if (col.gameObject.tag == "Planet") {
 			canJump = true;
-			currentPlanet = col.transform;
 		}
 
-        if (col.gameObject.tag == "Water")
-        {
-            Invoke("Respawn", 2);
-        }
 	}
 
-	void FixedUpdate () {
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+            if (col.gameObject.tag == "Planet")
+        {
+            currentPlanet = col.transform;
+        }
+    }
+
+    void FixedUpdate () {
         float move = Input.GetAxis ("Horizontal");
 		if (Input.GetKey (KeyCode.A)) {
 			rb.AddForce (transform.right * move * maxSpeed);
