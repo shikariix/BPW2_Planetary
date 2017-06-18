@@ -11,6 +11,7 @@ public class PlayerScript : MonoBehaviour {
 	public float maxSpeed = 5f;
     public Vector3 spawn;
 
+	private Animator anim;
     private AudioSource sound;
     private Transform currentPlanet;
 	private bool canJump = false;
@@ -29,6 +30,7 @@ public class PlayerScript : MonoBehaviour {
 	}
 
 	void Start() {
+		anim = GetComponent<Animator> ();
         spawn = gameObject.transform.position;
         sound = GetComponent<AudioSource>();
     }
@@ -48,13 +50,16 @@ public class PlayerScript : MonoBehaviour {
 		//	}
 		//}
 
-		if (Input.GetButtonDown ("Jump") && canJump == true) {
+		if (Input.GetButtonDown ("Jump") && canJump) {
             //find something else for this?
 			rb.AddForce (transform.up * jump);
 			canJump = false;
             sound.Play();
+			anim.SetBool ("isFloating", true);
 		}
-			
+		if (!canJump) {
+			anim.SetBool ("isIdle", false);
+		}
 	}
 
 	void OnCollisionEnter2D (Collision2D col) {
@@ -62,7 +67,7 @@ public class PlayerScript : MonoBehaviour {
 		if (col.gameObject.tag == "Planet") {
 			canJump = true;
 		}
-
+		anim.SetBool ("isFloating", false);
 	}
 
     private void OnTriggerEnter2D(Collider2D col)
@@ -77,10 +82,17 @@ public class PlayerScript : MonoBehaviour {
         float move = Input.GetAxis ("Horizontal");
 		if (Input.GetKey (KeyCode.A)) {
 			rb.AddForce (transform.right * move * maxSpeed);
-            Flip();
+			anim.SetBool ("isWalking", true);
+			anim.SetBool ("isIdle", false);
+			Flip ();
 		} else if (Input.GetKey (KeyCode.D)) {
 			rb.AddForce (transform.right * move * maxSpeed);
-            Flip();
+			anim.SetBool ("isWalking", true);
+			anim.SetBool ("isIdle", false);
+			Flip ();
+		} else {
+			anim.SetBool ("isWalking", false);
+			anim.SetBool ("isIdle", true);
 		}
 			
 		if (currentPlanet != null) {
