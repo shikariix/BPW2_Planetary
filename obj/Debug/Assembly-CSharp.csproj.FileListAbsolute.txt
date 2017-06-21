@@ -16,7 +16,6 @@ D:\Documenten\Unity\BPW2_Planetary\Temp\bin\Debug\Unity.UNetWeaver.dll
 D:\Documenten\Unity\BPW2_Planetary\Temp\bin\Debug\Unity.CecilTools.dll
 D:\Documenten\Unity\BPW2_Planetary\Temp\bin\Debug\Mono.Cecil.Pdb.dll
 D:\Documenten\Unity\BPW2_Planetary\Temp\bin\Debug\Mono.Cecil.Mdb.dll
-D:\Documenten\Unity\BPW2_Planetary\Temp\bin\Debug\Assembly-CSharp-firstpass.pdb
 D:\Documenten\Unity\BPW2_Planetary\Temp\bin\Debug\UnityEngine.xml
 D:\Documenten\Unity\BPW2_Planetary\Temp\bin\Debug\UnityEditor.xml
 D:\Documenten\Unity\BPW2_Planetary\Temp\bin\Debug\UnityEngine.UI.xml
