@@ -5,6 +5,9 @@ using UnityEngine;
 public class StateMachineManager : MonoBehaviour {
 
     Canvas PauseMenuCanvas, MainMenuCanvas, OptionsMenuCanvas;
+	GameObject player;
+	PlayerScript controls;
+	StickyTongue tongue;
 
     public enum GameState
     {
@@ -13,25 +16,34 @@ public class StateMachineManager : MonoBehaviour {
         PauseMenu,
         Playing,
     }
+	public static StateMachineManager Singleton { get; private set; }
 
     public GameState currentState;
-	
+
+	void Awake() {
+		if (Singleton == null)
+		{
+			Singleton = this;
+			DontDestroyOnLoad(gameObject);
+		} else
+		{
+			Destroy(gameObject);
+		}
+	}
+
 	void Start () {
         PauseMenuCanvas = GameObject.Find("PauseMenu").gameObject.GetComponent<Canvas>();
         MainMenuCanvas = GameObject.Find("MainMenu").gameObject.GetComponent<Canvas>();
         OptionsMenuCanvas = GameObject.Find("OptionsMenu").gameObject.GetComponent<Canvas>();
+		player = GameObject.FindWithTag ("Player");
         ChangeState(GameState.MainMenu);
     }
-	
-	
-	void Update () {
-		
-	}
 
     //--------- State Machine ----------
     IEnumerator MainMenuState()
     {
         MainMenuCanvas.enabled = true;
+		player.SetActive (false);
         while (currentState == GameState.MainMenu)
         {
             yield return null;
@@ -54,22 +66,26 @@ public class StateMachineManager : MonoBehaviour {
     IEnumerator PauseMenuState()
     {
         PauseMenuCanvas.enabled = true;
+		controls = player.GetComponent<PlayerScript>();
+		tongue = player.GetComponent<StickyTongue>();
+		controls.enabled = false;
+		tongue.enabled = false;
         while (currentState == GameState.PauseMenu)
         {
             yield return null;
         }
-
         PauseMenuCanvas.enabled = false;
+		controls.enabled = true;
+		tongue.enabled = true;
     }
 
     IEnumerator PlayingState()
     {
-
+		player.SetActive(true);
         while (currentState == GameState.Playing)
         {
             yield return null;
         }
-
     }
 
     public void ChangeState(GameState newState)

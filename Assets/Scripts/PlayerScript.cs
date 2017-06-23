@@ -9,7 +9,6 @@ public class PlayerScript : MonoBehaviour {
 	public Rigidbody2D rb;
 	public float jump;
 	public float maxSpeed = 5f;
-    public Vector3 spawn;
 
 	private Animator anim;
     private AudioSource sound;
@@ -17,21 +16,17 @@ public class PlayerScript : MonoBehaviour {
 	private bool canJump = false;
 	bool facingRight = true;
 
-	void Awake() {
-        if (Singleton == null)
-        {
-            Singleton = this;
-            DontDestroyOnLoad(gameObject);
-        } else
-        {
-            Destroy(gameObject);
-        }
-		
-	}
-
 	void Start() {
+		if (Singleton == null)
+		{
+			Singleton = this;
+			DontDestroyOnLoad(gameObject);
+		} else
+		{
+			Destroy(gameObject);
+		}
+
 		anim = GetComponent<Animator> ();
-        spawn = gameObject.transform.position;
         sound = GetComponent<AudioSource>();
     }
 
@@ -50,7 +45,7 @@ public class PlayerScript : MonoBehaviour {
 		//	}
 		//}
 
-		if (Input.GetButtonDown ("Jump") && canJump) {
+		if (Input.GetKeyDown (KeyCode.Space) && canJump) {
             //find something else for this?
 			rb.AddForce (transform.up * jump);
 			canJump = false;
@@ -66,11 +61,12 @@ public class PlayerScript : MonoBehaviour {
         //only allow jumping after hitting ground to avoid endless jumps
 		if (col.gameObject.tag == "Planet") {
 			canJump = true;
+			currentPlanet = col.transform;
 		}
 		anim.SetBool ("isFloating", false);
 	}
 
-    private void OnTriggerEnter2D(Collider2D col)
+     void OnTriggerEnter2D(Collider2D col)
     {
             if (col.gameObject.tag == "Planet")
         {
@@ -108,10 +104,4 @@ public class PlayerScript : MonoBehaviour {
             flip.flipX = !flip.flipX;
         }
 	}
-
-    void Respawn ()
-    {
-        //Instantiate(gameObject, spawn, Quaternion.identity);
-        //Destroy(gameObject);
-    }
 }

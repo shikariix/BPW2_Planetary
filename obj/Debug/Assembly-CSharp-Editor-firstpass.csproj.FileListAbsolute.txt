@@ -53,3 +53,4 @@ D:\Documenten\Unity\BPW2_Planetary\Temp\bin\Debug\UnityEngine.TestRunner.dll
 D:\Documenten\Unity\BPW2_Planetary\Temp\bin\Debug\UnityEditor.TestRunner.xml
 D:\Documenten\Unity\BPW2_Planetary\Temp\bin\Debug\UnityEngine.TestRunner.xml
 D:\Documenten\Unity\BPW2_Planetary\Temp\bin\Debug\UnityEditor.Purchasing.xml
+D:\Documenten\Unity\BPW2_Planetary\Temp\bin\Debug\Assembly-CSharp-firstpass.pdb

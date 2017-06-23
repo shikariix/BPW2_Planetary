@@ -5,16 +5,24 @@ using UnityEngine.SceneManagement;
 
 public class ViewChanger : MonoBehaviour {
 
+	public static ViewChanger Singleton { get; private set; }
+
+	void Awake() {
+		if (Singleton == null)
+		{
+			Singleton = this;
+			DontDestroyOnLoad(gameObject);
+		} else
+		{
+			Destroy(gameObject);
+		}
+	}
+
     StateMachineManager gameManager;
 
 	void Start () {
         gameManager = FindObjectOfType<StateMachineManager>();
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
     public void MainMenu()
     {
@@ -39,7 +47,8 @@ public class ViewChanger : MonoBehaviour {
 
     public void Playing()
     {
-        SceneManager.LoadScene("Level1", LoadSceneMode.Additive);
+		
+		SceneManager.LoadScene ("Level1");
         gameManager.ChangeState(StateMachineManager.GameState.Playing);
     }
 }

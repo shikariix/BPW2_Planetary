@@ -29,3 +29,4 @@ D:\Documenten\Unity\BPW2_Planetary\Temp\bin\Debug\nunit.framework.dll
 D:\Documenten\Unity\BPW2_Planetary\Temp\bin\Debug\UnityEngine.TestRunner.dll
 D:\Documenten\Unity\BPW2_Planetary\Temp\bin\Debug\UnityEngine.TestRunner.xml
 D:\Documenten\Unity\BPW2_Planetary\Temp\bin\Debug\nunit.framework.xml
+D:\Documenten\Unity\BPW2_Planetary\Temp\bin\Debug\Assembly-CSharp-firstpass.pdb
