@@ -29,22 +29,8 @@ public class PlayerScript : MonoBehaviour {
 		anim = GetComponent<Animator> ();
         sound = GetComponent<AudioSource>();
     }
-
-	// Update is called once per frame
+    
 	void Update () {
-        //inefficient script, keeping it to show progress
-		//PlanetScript[] planets = GameObject.FindObjectsOfType<PlanetScript> ();
-		//foreach (PlanetScript p in planets) {
-		//	float distance = Vector3.Distance (p.transform.position, transform.position);
-
-		//	if (distance < p.range) {
-		//		float influence = 1 - (distance / p.range);
-		//		rb.AddForce ((p.transform.position - transform.position).normalized * p.power * influence);
-
-		//		
-		//	}
-		//}
-
 		if (Input.GetKeyDown (KeyCode.Space) && canJump) {
             //find something else for this?
 			rb.AddForce (transform.up * jump);
