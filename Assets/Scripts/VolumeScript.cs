@@ -2,14 +2,13 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class VolumeScript : MonoBehaviour
-{
-
+public class VolumeScript : MonoBehaviour {
+	
     public Slider volumeSlider;
     public AudioSource volumeAudio;
-    public void VolumeController()
-    {
+
+	//Align slider value and audio volume
+    public void VolumeController() {
         volumeSlider.value = volumeAudio.volume;
     }
-
 }

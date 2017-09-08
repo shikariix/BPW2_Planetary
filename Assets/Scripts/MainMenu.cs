@@ -6,13 +6,13 @@ public class MainMenu : MonoBehaviour {
 
 	public static MainMenu instance { get; private set; }
 
-	void Awake () {
-		if (instance == null)
-		{
+	//Singleton
+	void Awake() {
+		if (instance == null) {
 			instance = this;
 			DontDestroyOnLoad(gameObject);
-		} else
-		{
+		} 
+		else {
 			Destroy(gameObject);
 		}
 	}

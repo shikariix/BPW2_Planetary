@@ -13,21 +13,27 @@ public class PlayerScript : MonoBehaviour {
 	private Animator anim;
     private AudioSource sound;
     private Transform currentPlanet;
+	private SpriteRenderer flip;
 	private bool canJump = false;
-	bool facingRight = true;
 
+	private enum Direction {
+		Left,
+		Right,
+	}
+
+	//Singleton
 	void Start() {
-		if (Singleton == null)
-		{
+		if (Singleton == null) {
 			Singleton = this;
 			DontDestroyOnLoad(gameObject);
-		} else
-		{
+		} 
+		else {
 			Destroy(gameObject);
 		}
 
 		anim = GetComponent<Animator> ();
         sound = GetComponent<AudioSource>();
+		flip = GetComponent<SpriteRenderer>();
     }
     
 	void Update () {
@@ -52,26 +58,24 @@ public class PlayerScript : MonoBehaviour {
 		anim.SetBool ("isFloating", false);
 	}
 
-     void OnTriggerEnter2D(Collider2D col)
-    {
-            if (col.gameObject.tag == "Planet")
-        {
+     void OnTriggerEnter2D(Collider2D col) {
+            if (col.gameObject.tag == "Planet") {
             currentPlanet = col.transform;
         }
     }
 
-    void FixedUpdate () {
+    void FixedUpdate() {
         float move = Input.GetAxis ("Horizontal");
 		if (Input.GetKey (KeyCode.A)) {
 			rb.AddForce (transform.right * move * maxSpeed);
 			anim.SetBool ("isWalking", true);
 			anim.SetBool ("isIdle", false);
-			Flip ();
+			StartCoroutine ("Left");
 		} else if (Input.GetKey (KeyCode.D)) {
 			rb.AddForce (transform.right * move * maxSpeed);
 			anim.SetBool ("isWalking", true);
 			anim.SetBool ("isIdle", false);
-			Flip ();
+			StartCoroutine ("Right");
 		} else {
 			anim.SetBool ("isWalking", false);
 			anim.SetBool ("isIdle", true);
@@ -82,12 +86,14 @@ public class PlayerScript : MonoBehaviour {
 		}
 	}
 
-	void Flip () {
-        SpriteRenderer flip = GetComponent<SpriteRenderer>();
-        if (facingRight && Input.GetKey(KeyCode.A) || !facingRight && Input.GetKey(KeyCode.D))
-        {
-            facingRight = !facingRight;
-            flip.flipX = !flip.flipX;
-        }
+	//Flips the sprite in the direction the player is facing
+	IEnumerator Right() {
+		flip.flipX = false;
+		yield return null;
+	}
+
+	IEnumerator Left() {
+		flip.flipX = true;
+		yield return null;
 	}
 }

@@ -4,34 +4,34 @@ using UnityEngine;
 
 public class StateMachineManager : MonoBehaviour {
 
-    Canvas PauseMenuCanvas, MainMenuCanvas, OptionsMenuCanvas;
-	GameObject player;
-	PlayerScript controls;
-	StickyTongue tongue;
+	public static StateMachineManager Singleton { get; private set; }
+	public GameState currentState;
+    private Canvas PauseMenuCanvas, MainMenuCanvas, OptionsMenuCanvas;
 
-    public enum GameState
-    {
+	private GameObject player;
+	private PlayerScript controls;
+	private StickyTongue tongue;
+
+    public enum GameState {
         MainMenu,
         OptionsMenu,
         PauseMenu,
         Playing,
     }
-	public static StateMachineManager Singleton { get; private set; }
 
-    public GameState currentState;
-
+	//Singleton
 	void Awake() {
 		if (Singleton == null)
 		{
 			Singleton = this;
 			DontDestroyOnLoad(gameObject);
-		} else
-		{
+		} 
+		else {
 			Destroy(gameObject);
 		}
 	}
 
-	void Start () {
+	void Start() {
         PauseMenuCanvas = GameObject.Find("PauseMenu").gameObject.GetComponent<Canvas>();
         MainMenuCanvas = GameObject.Find("MainMenu").gameObject.GetComponent<Canvas>();
         OptionsMenuCanvas = GameObject.Find("OptionsMenu").gameObject.GetComponent<Canvas>();
@@ -39,39 +39,32 @@ public class StateMachineManager : MonoBehaviour {
         ChangeState(GameState.MainMenu);
     }
 
-    //--------- State Machine ----------
-    IEnumerator MainMenuState()
-    {
+    //State Machine
+    IEnumerator MainMenuState() {
         MainMenuCanvas.enabled = true;
 		player.SetActive (false);
-        while (currentState == GameState.MainMenu)
-        {
+        while (currentState == GameState.MainMenu) {
             yield return null;
         }
 
         MainMenuCanvas.enabled = false;
     }
 
-    IEnumerator OptionsMenuState()
-    {
+    IEnumerator OptionsMenuState() {
         OptionsMenuCanvas.enabled = true;
-        while (currentState == GameState.OptionsMenu)
-        {
+        while (currentState == GameState.OptionsMenu) {
             yield return null;
         }
-
         OptionsMenuCanvas.enabled = false;
     }
 
-    IEnumerator PauseMenuState()
-    {
+    IEnumerator PauseMenuState() {
         PauseMenuCanvas.enabled = true;
 		controls = player.GetComponent<PlayerScript>();
 		tongue = player.GetComponent<StickyTongue>();
 		controls.enabled = false;
 		tongue.enabled = false;
-        while (currentState == GameState.PauseMenu)
-        {
+        while (currentState == GameState.PauseMenu) {
             yield return null;
         }
         PauseMenuCanvas.enabled = false;
@@ -79,17 +72,14 @@ public class StateMachineManager : MonoBehaviour {
 		tongue.enabled = true;
     }
 
-    IEnumerator PlayingState()
-    {
+    IEnumerator PlayingState() {
 		player.SetActive(true);
-        while (currentState == GameState.Playing)
-        {
+        while (currentState == GameState.Playing) {
             yield return null;
         }
     }
 
-    public void ChangeState(GameState newState)
-    {
+    public void ChangeState(GameState newState) {
         currentState = newState;
         StartCoroutine(newState.ToString() + "State");
     }

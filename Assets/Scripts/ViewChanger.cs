@@ -6,48 +6,42 @@ using UnityEngine.SceneManagement;
 public class ViewChanger : MonoBehaviour {
 
 	public static ViewChanger Singleton { get; private set; }
+	private StateMachineManager gameManager;
 
+	//Singleton
 	void Awake() {
-		if (Singleton == null)
-		{
+		if (Singleton == null) {
 			Singleton = this;
 			DontDestroyOnLoad(gameObject);
-		} else
-		{
+		} 
+		else {
 			Destroy(gameObject);
 		}
 	}
-
-    StateMachineManager gameManager;
-
-	void Start () {
+		
+	void Start() {
         gameManager = FindObjectOfType<StateMachineManager>();
     }
 
-    public void MainMenu()
-    {
+	//Change the state
+    public void MainMenu() {
         gameManager.ChangeState(StateMachineManager.GameState.MainMenu);
     }
 
-    public void Options()
-    {
+    public void Options() {
         gameManager.ChangeState(StateMachineManager.GameState.OptionsMenu);
     }
 
-    public void Pause()
-    {
+    public void Pause() {
         gameManager.ChangeState(StateMachineManager.GameState.PauseMenu);
     }
 
-    public void Quit()
-    {
+	public void Quit() {
         Debug.Log("You cannot quit in the editor!");
         Application.Quit();
     }
 
-    public void Playing()
-    {
-		
+	public void Playing() {
 		SceneManager.LoadScene ("Level1");
         gameManager.ChangeState(StateMachineManager.GameState.Playing);
     }

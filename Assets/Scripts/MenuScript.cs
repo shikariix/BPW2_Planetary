@@ -5,18 +5,18 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class MenuScript : MonoBehaviour {
+
 	public Button startButton;
 	public GameObject menu;
     public Camera mainCamera;
 
-	// Use this for initialization
-	void Start () {
+	void Start() {
 		startButton.onClick.AddListener (() => {
 			StartGame ();
 		});
 	}
 
-	void StartGame () {
+	void StartGame() {
 		SceneManager.LoadScene ("Level1", LoadSceneMode.Additive);
 		menu.SetActive (false);
         mainCamera.enabled = false;
